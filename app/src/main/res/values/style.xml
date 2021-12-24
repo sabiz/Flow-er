@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Style.Text.Big" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">35sp</item>
+    </style>
+
+
+</resources>

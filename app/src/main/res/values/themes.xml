@@ -1,0 +1,32 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.Flower.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primary_blue</item>
+        <item name="colorPrimaryVariant">@color/primary_blue_variant</item>
+        <item name="colorOnPrimary">@color/primary_blue_on</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/primary_green</item>
+        <item name="colorSecondaryVariant">@color/primary_green_variant</item>
+        <item name="colorOnSecondary">@color/primary_green_on</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTranslucentStatus">true</item>
+
+        <item name="android:textViewStyle">@style/FlowerTextViewStyle</item>
+
+    </style>
+
+    <style name="Theme.Flower" parent="Theme.Flower.Base">
+    </style>
+
+    <style name="FlowerTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">monospace</item>
+    </style>
+
+</resources>

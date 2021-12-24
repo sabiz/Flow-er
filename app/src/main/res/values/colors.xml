@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_blue">#001F3F</color>
+    <color name="primary_blue_variant">#012D5A</color>
+    <color name="primary_blue_on">#D3E0EA</color>
+
+    <color name="primary_green">#A8DF65</color>
+    <color name="primary_green_variant">#C4EF8F</color>
+    <color name="primary_green_on">#191A19</color>
+
+    <color name="primary_blue_green_on">#F2789F</color>
+</resources>

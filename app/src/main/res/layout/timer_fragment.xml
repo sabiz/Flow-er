@@ -119,6 +119,21 @@
             app:layout_constraintStart_toStartOf="@+id/guideline_button_start_2"
             app:layout_constraintTop_toTopOf="@id/guideline_button_center" />
 
+        <Button
+            android:id="@+id/button_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="monospace"
+            android:text="RESET"
+            android:background="@drawable/bg_button_reset"
+            android:textColor="?attr/colorOnPrimary"
+            android:visibility="@{timer.state != State.STAND_BY ? View.VISIBLE : View.INVISIBLE}"
+            app:backgroundTint="@null"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_button_start_8"
+            app:layout_constraintStart_toStartOf="@+id/guideline_button_start_2"
+            app:layout_constraintTop_toBottomOf="@+id/button_start" />
+
         <TextView
             android:id="@+id/text_time_sec"
             android:layout_width="0dp"

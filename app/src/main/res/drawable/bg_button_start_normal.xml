@@ -14,7 +14,7 @@
                 android:radius="10dip" />
             <stroke
                 android:color="?colorOnPrimary"
-                android:width="5sp"
+                android:width="3.5sp"
                 />
         </shape>
     </item>

@@ -28,10 +28,10 @@ class TimerFragment : Fragment() {
     private val countDownTimer by lazy {
         CountDownTimer(10UL, viewModel)
     }
-    private val timerSequence = mutableListOf(120UL, 25UL, 40UL, 25UL, 40UL)
+    // TODO
+    private var timerSequence = mutableListOf(120UL, 25UL, 40UL, 25UL, 40UL)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        // TODO シーケンスとタイマー表示の実装
         _binding = DataBindingUtil.inflate(inflater, R.layout.timer_fragment ,container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.timer = viewModel
@@ -46,6 +46,12 @@ class TimerFragment : Fragment() {
         }
         binding.buttonPause.setOnClickListener {
             viewModel.state.value = State.PAUSE
+        }
+        binding.buttonReset.setOnClickListener {
+            viewModel.state.value = State.STAND_BY
+            // TODO
+            timerSequence = mutableListOf(120UL, 25UL, 40UL, 25UL, 40UL)
+            countDownTimer.time = 10UL
         }
         setupObserve()
         return binding.root
@@ -64,6 +70,9 @@ class TimerFragment : Fragment() {
                 }
                 State.PAUSE -> {
                     countDownTimer.stop()
+                }
+                State.STAND_BY -> {
+                    viewModel.progress.value = 0F
                 }
                 else -> {
 

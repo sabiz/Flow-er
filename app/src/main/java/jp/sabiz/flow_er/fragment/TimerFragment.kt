@@ -1,23 +1,30 @@
 package jp.sabiz.flow_er.fragment
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import jp.sabiz.flow_er.R
-import jp.sabiz.flow_er.viewmodel.TimerViewModel
 import jp.sabiz.flow_er.databinding.TimerFragmentBinding
 import jp.sabiz.flow_er.timer.CountDownTimer
+import jp.sabiz.flow_er.viewmodel.TimerViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class TimerFragment : Fragment() {
 
     companion object {
         @JvmStatic
         fun newInstance() = TimerFragment()
+        //TODO
+        @JvmStatic
+        val TIMER_SEQUENCE = mutableListOf(80UL, 25UL, 40UL, 25UL, 40UL)
     }
 
     private var _binding: TimerFragmentBinding? = null
@@ -28,8 +35,6 @@ class TimerFragment : Fragment() {
     private val countDownTimer by lazy {
         CountDownTimer(10UL, viewModel)
     }
-    // TODO
-    private var timerSequence = mutableListOf(120UL, 25UL, 40UL, 25UL, 40UL)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DataBindingUtil.inflate(inflater, R.layout.timer_fragment ,container, false)
@@ -50,7 +55,7 @@ class TimerFragment : Fragment() {
         binding.buttonReset.setOnClickListener {
             viewModel.state.value = State.STAND_BY
             // TODO
-            timerSequence = mutableListOf(120UL, 25UL, 40UL, 25UL, 40UL)
+            viewModel.timerSequence.value = TIMER_SEQUENCE.map { it }.toMutableList()
             countDownTimer.time = 10UL
         }
         setupObserve()
@@ -81,19 +86,20 @@ class TimerFragment : Fragment() {
         }
     }
 
-    private fun onTick(currentTimeMin: ULong, currentTimeSec: ULong) {
-        viewModel.currentMin.value = currentTimeMin
-        viewModel.currentSec.value = currentTimeSec
-        val time = CountDownTimer.toTime(currentTimeMin, currentTimeSec)
-        viewModel.progress.value = (countDownTimer.time - time).toFloat() / countDownTimer.time.toFloat()
-        if (currentTimeMin == 0UL && currentTimeSec == 0UL) {
-            val nextTimer = timerSequence.removeFirstOrNull()
+    private fun onTick(remainingTimeMin: ULong, remainingTimeSec: ULong, remainingAllMilliSec: ULong) {
+        viewModel.currentMin.value = remainingTimeMin
+        viewModel.currentSec.value = remainingTimeSec
+        viewModel.progress.value = (countDownTimer.timeMilliSec - remainingAllMilliSec).toFloat() / countDownTimer.timeMilliSec.toFloat()
+        if (remainingTimeMin <= 0UL && remainingTimeSec <= 0UL && remainingAllMilliSec <= 0UL) {
+            val nextTimer = viewModel.timerSequence.value?.removeFirstOrNull()
             if (nextTimer == null) {
                 viewModel.state.value = State.STAND_BY
                 return
             }
-            countDownTimer.time = nextTimer
-            countDownTimer.start(this::onTick)
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+                countDownTimer.time = nextTimer
+                countDownTimer.start(this@TimerFragment::onTick)
+            }
         }
     }
 

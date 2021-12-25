@@ -17,4 +17,5 @@ class TimerViewModel : ViewModel() {
     var progress = MutableLiveData(0F)
     var currentMin = MutableLiveData(0UL)
     var currentSec = MutableLiveData(0UL)
+    var timerSequence = MutableLiveData(mutableListOf(80UL, 25UL, 40UL, 25UL, 40UL))
 }

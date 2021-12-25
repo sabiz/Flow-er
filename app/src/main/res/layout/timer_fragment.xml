@@ -3,10 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="timer" type="jp.sabiz.flow_er.viewmodel.TimerViewModel"/>
+        <variable name="timer" type="jp.sabiz.flow_er.viewmodel.TimerViewModel" />
 
         <import type="jp.sabiz.flow_er.fragment.TimerFragment.State"/>
         <import type="android.view.View"/>
+        <import type="kotlin.ULong"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,46 +24,53 @@
             app:layout_constraintGuide_percent="@{timer.progress.floatValue()}" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_button_start_2"
+            android:id="@+id/guideline_v_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.2" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_button_start_8"
+            android:id="@+id/guideline_v_8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.8" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_button_center"
+            android:id="@+id/guideline_h_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.8" />
+            app:layout_constraintGuide_percent="0.3" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_text_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.1" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_text_5"
+            android:id="@+id/guideline_h_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.5" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_text_7"
+            android:id="@+id/guideline_h_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.6" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_h_7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.7" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_h_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.8" />
 
         <View
             android:id="@+id/progress_area"
@@ -97,10 +105,10 @@
             android:textAppearance="@style/Style.Text.Big"
             android:visibility="@{timer.state != State.RUNNING ? View.VISIBLE : View.INVISIBLE}"
             app:backgroundTint="@null"
-            app:layout_constraintBottom_toBottomOf="@id/guideline_button_center"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_button_start_8"
-            app:layout_constraintStart_toStartOf="@+id/guideline_button_start_2"
-            app:layout_constraintTop_toTopOf="@id/guideline_button_center"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_h_8"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_8"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintTop_toTopOf="@id/guideline_h_8"
             tools:ignore="DuplicateClickableBoundsCheck" />
 
         <Button
@@ -114,10 +122,10 @@
             android:textColor="@color/primary_blue_green_on"
             android:visibility="@{timer.state == State.RUNNING ? View.VISIBLE : View.INVISIBLE}"
             app:backgroundTint="@null"
-            app:layout_constraintBottom_toBottomOf="@id/guideline_button_center"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_button_start_8"
-            app:layout_constraintStart_toStartOf="@+id/guideline_button_start_2"
-            app:layout_constraintTop_toTopOf="@id/guideline_button_center" />
+            app:layout_constraintBottom_toBottomOf="@id/guideline_h_8"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_8"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintTop_toTopOf="@id/guideline_h_8" />
 
         <Button
             android:id="@+id/button_reset"
@@ -130,8 +138,8 @@
             android:textColor="?attr/colorOnPrimary"
             android:visibility="@{timer.state != State.STAND_BY ? View.VISIBLE : View.INVISIBLE}"
             app:backgroundTint="@null"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_button_start_8"
-            app:layout_constraintStart_toStartOf="@+id/guideline_button_start_2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_8"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_2"
             app:layout_constraintTop_toBottomOf="@+id/button_start" />
 
         <TextView
@@ -146,10 +154,10 @@
             android:textStyle="bold"
             android:visibility="@{timer.state != State.STAND_BY ? View.VISIBLE : View.INVISIBLE}"
             android:maxLines="1"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_text_5"
-            app:layout_constraintEnd_toEndOf="@+id/guideline_button_start_8"
-            app:layout_constraintStart_toStartOf="@+id/guideline_button_start_2"
-            app:layout_constraintTop_toTopOf="@+id/guideline_text_1"
+            app:layout_constraintBottom_toBottomOf="@+id/guideline_h_6"
+            app:layout_constraintEnd_toEndOf="@+id/guideline_v_8"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintTop_toTopOf="@+id/guideline_h_3"
             tools:ignore="RtlCompat" />
 
         <TextView
@@ -158,14 +166,14 @@
             android:layout_height="0dp"
             android:autoSizeTextType="uniform"
             android:autoSizeMaxTextSize="1000sp"
-            android:text="@{timer.currentMin.toString()}"
+            android:text="@{timer.currentMin.toString().equals(`0`) ? ``: timer.currentMin.toString()}"
             android:textAlignment="center"
             android:visibility="@{timer.state != State.STAND_BY ? View.VISIBLE : View.INVISIBLE}"
             android:maxLines="1"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_text_7"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_button_start_8"
-            app:layout_constraintStart_toStartOf="@+id/guideline_button_start_2"
-            app:layout_constraintTop_toTopOf="@+id/guideline_text_5" />
+            app:layout_constraintBottom_toBottomOf="@+id/guideline_h_7"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_8"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintTop_toTopOf="@+id/guideline_h_6" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

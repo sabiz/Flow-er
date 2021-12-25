@@ -7,7 +7,7 @@
 
         <import type="jp.sabiz.flow_er.fragment.TimerFragment.State"/>
         <import type="android.view.View"/>
-        <import type="kotlin.ULong"/>
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,6 +36,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.8" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_h_2_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.25" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_h_3"
@@ -174,6 +181,36 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline_v_8"
             app:layout_constraintStart_toStartOf="@+id/guideline_v_2"
             app:layout_constraintTop_toTopOf="@+id/guideline_h_6" />
+
+        <TextView
+            android:id="@+id/text_up_coming"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="1000sp"
+            android:text="@{timer.timerSequence.size() > 1 ? timer.timerSequence[0].toString() : ``}"
+            android:textAlignment="center"
+            android:visibility="@{timer.state != State.STAND_BY ? View.VISIBLE : View.INVISIBLE}"
+            android:maxLines="1"
+            app:layout_constraintBottom_toBottomOf="@+id/guideline_h_3"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_8"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_2"
+            app:layout_constraintTop_toTopOf="@+id/guideline_h_2_5"/>
+
+        <TextView
+            android:id="@+id/text_up_coming_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="1000sp"
+            android:text="@{timer.timerSequence.size() > 1 ? timer.timerSequence[1].toString() : ``}"
+            android:textAlignment="center"
+            android:visibility="@{timer.state != State.STAND_BY ? View.VISIBLE : View.INVISIBLE}"
+            android:maxLines="1"
+            app:layout_constraintBottom_toTopOf="@+id/text_up_coming"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_8"
+            app:layout_constraintStart_toStartOf="@+id/guideline_v_2"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

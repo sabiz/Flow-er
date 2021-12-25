@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 
-typealias CountDownTimerListener = (remainingTimeMin: ULong, remainingTimeSec: ULong, remainingAllMilliSec: ULong) -> Unit
+typealias CountDownTimerListener = (remainingMinSec: MinSec, remainingAllMilliSec: ULong) -> Unit
 
 class CountDownTimer (private var initialTimeSec: ULong, private val viewModel: ViewModel) {
 
@@ -70,8 +70,7 @@ class CountDownTimer (private var initialTimeSec: ULong, private val viewModel: 
     }
 
     private fun call(listener: CountDownTimerListener) {
-        val tempCurrentTimeMin = (currentTimeMilliSec / 1000L / 60L).toULong()
-        val tempCurrentTimeSec = (currentTimeMilliSec / 1000L % 60L).toULong()
-        listener.invoke(tempCurrentTimeMin, tempCurrentTimeSec, currentTimeMilliSec.toULong())
+        val temp = (currentTimeMilliSec / 1000L).toULong()
+        listener.invoke(MinSec.from(temp), currentTimeMilliSec.toULong())
     }
 }

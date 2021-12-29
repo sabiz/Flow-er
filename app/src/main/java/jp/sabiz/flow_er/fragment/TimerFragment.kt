@@ -98,7 +98,7 @@ class TimerFragment : Fragment() {
         viewModel.progress.value = (countDownTimer.timeMilliSec - remainingAllMilliSec).toFloat() / countDownTimer.timeMilliSec.toFloat()
         if (remainingMinSec.minutes <= 0UL && remainingMinSec.seconds <= 0UL && remainingAllMilliSec <= 0UL) {
             val nextTimer = viewModel.timerSequence.value?.firstOrNull()
-            if(viewModel.timerSequence.value != null && viewModel.timerSequence.value?.size ?: 0 > 1) {
+            if(viewModel.timerSequence.value != null && viewModel.timerSequence.value?.size ?: 0 >= 1) {
                 viewModel.timerSequence.value = viewModel.timerSequence.value?.filterIndexed { index, _ -> index != 0 }
             }
             if (nextTimer == null) {

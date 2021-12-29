@@ -1,9 +1,9 @@
 package jp.sabiz.flow_er.timer
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
+import kotlin.math.ceil
 
 typealias CountDownTimerListener = (remainingMinSec: MinSec, remainingAllMilliSec: ULong) -> Unit
 
@@ -70,7 +70,7 @@ class CountDownTimer (private var initialTimeSec: ULong, private val viewModel: 
     }
 
     private fun call(listener: CountDownTimerListener) {
-        val temp = (currentTimeMilliSec / 1000L).toULong()
+        val temp = ceil(currentTimeMilliSec.toDouble() / 1000.0).toULong()
         listener.invoke(MinSec.from(temp), currentTimeMilliSec.toULong())
     }
 }

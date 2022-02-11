@@ -20,6 +20,8 @@
 
         <item name="android:textViewStyle">@style/FlowerTextViewStyle</item>
 
+
+        <item name="md_color_button_text">?attr/colorOnPrimary</item>
     </style>
 
     <style name="Theme.Flower" parent="Theme.Flower.Base">

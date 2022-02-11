@@ -9,4 +9,7 @@
     <color name="primary_green_on">#191A19</color>
 
     <color name="primary_blue_green_on">#F2789F</color>
+
+    <color name="danger">#FF6363</color>
+    <color name="normal">#61B15A</color>
 </resources>

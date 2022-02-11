@@ -8,27 +8,24 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import jp.sabiz.flow_er.R
 import jp.sabiz.flow_er.databinding.TimerFragmentBinding
+import jp.sabiz.flow_er.flowitem.FlowItem
 import jp.sabiz.flow_er.timer.CountDownTimer
 import jp.sabiz.flow_er.timer.MinSec
 import jp.sabiz.flow_er.util.SoundPlayer
 import jp.sabiz.flow_er.viewmodel.TimerViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TimerFragment : Fragment() {
 
     companion object {
         @JvmStatic
         fun newInstance() = TimerFragment()
-        //TODO
-        @JvmStatic
-        val TIMER_SEQUENCE = listOf(MinSec.from(80UL),
-                                    MinSec.from(25UL),
-                                    MinSec.from(40UL),
-                                    MinSec.from(25UL),
-                                    MinSec.from(40UL))
 
         private const val SOUND_IDX_SOON = 0
         private const val SOUND_IDX_FINISH = 1
@@ -40,7 +37,7 @@ class TimerFragment : Fragment() {
         ViewModelProvider(this)[TimerViewModel::class.java]
     }
     private val countDownTimer by lazy {
-        CountDownTimer(10UL, viewModel)
+        CountDownTimer(10L, viewModel)
     }
     private val soundPlayer = SoundPlayer()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -60,10 +57,11 @@ class TimerFragment : Fragment() {
             viewModel.state.value = State.PAUSE
         }
         binding.buttonReset.setOnClickListener {
+
             viewModel.state.value = State.STAND_BY
-            // TODO
-            viewModel.timerSequence.value = TIMER_SEQUENCE.map { it }.toList()
-            countDownTimer.time = 10UL
+            viewModel.loadSequence()
+            countDownTimer.time = 10L
+
         }
         setupObserve()
         soundPlayer.load(requireContext(), intArrayOf(R.raw.soon, R.raw.finish))
@@ -86,9 +84,8 @@ class TimerFragment : Fragment() {
                 }
                 State.STAND_BY -> {
                     viewModel.progress.value = 0F
-                    // TODO
-                    viewModel.timerSequence.value = TIMER_SEQUENCE.map { v -> v }.toList()
-                    countDownTimer.time = 10UL
+                    viewModel.loadSequence()
+                    countDownTimer.time = 10L
                 }
                 else -> {
 
@@ -98,18 +95,18 @@ class TimerFragment : Fragment() {
 
         viewModel.currentSec.observe(viewLifecycleOwner) {
             if (viewModel.state.value != State.RUNNING ||
-                viewModel.currentMin.value?:0UL > 0UL) {
+                viewModel.currentMin.value?:0L > 0L) {
                 return@observe
             }
-            if(it <= 3UL && it > 0UL) {
+            if(it in 1..3L) {
                 soundPlayer.play(SOUND_IDX_SOON)
-            } else if (it == 0UL) {
+            } else if (it == 0L) {
                 soundPlayer.play(SOUND_IDX_FINISH)
             }
         }
     }
 
-    private fun onTick(remainingMinSec: MinSec, remainingAllMilliSec: ULong) {
+    private fun onTick(remainingMinSec: MinSec, remainingAllMilliSec: Long) {
         if(viewModel.currentMin.value != remainingMinSec.minutes) {
             viewModel.currentMin.value = remainingMinSec.minutes
         }
@@ -117,7 +114,7 @@ class TimerFragment : Fragment() {
             viewModel.currentSec.value = remainingMinSec.seconds
         }
         viewModel.progress.value = (countDownTimer.timeMilliSec - remainingAllMilliSec).toFloat() / countDownTimer.timeMilliSec.toFloat()
-        if (remainingMinSec.minutes <= 0UL && remainingMinSec.seconds <= 0UL && remainingAllMilliSec <= 0UL) {
+        if (remainingMinSec.minutes <= 0L && remainingMinSec.seconds <= 0L && remainingAllMilliSec <= 0L) {
             nextTimer()
         }
     }
@@ -125,14 +122,14 @@ class TimerFragment : Fragment() {
     private fun nextTimer() {
         val nextTimer = viewModel.timerSequence.value?.firstOrNull()
         if(viewModel.timerSequence.value != null && viewModel.timerSequence.value?.size ?: 0 >= 1) {
-            viewModel.timerSequence.value = viewModel.timerSequence.value?.filterIndexed { index, _ -> index != 0 }
+            viewModel.timerSequence.value = viewModel.timerSequence.value?.filterIndexed { index, _ -> index != 0 }?.toMutableList()
         }
         if (nextTimer == null) {
             viewModel.state.value = State.STAND_BY
             return
         }
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-            countDownTimer.time = nextTimer.totalSeconds
+            countDownTimer.time = nextTimer.totalSeconds.toLong()
             countDownTimer.start(this@TimerFragment::onTick)
         }
     }

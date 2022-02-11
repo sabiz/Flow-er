@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import kotlin.math.ceil
 
-typealias CountDownTimerListener = (remainingMinSec: MinSec, remainingAllMilliSec: ULong) -> Unit
+typealias CountDownTimerListener = (remainingMinSec: MinSec, remainingAllMilliSec: Long) -> Unit
 
-class CountDownTimer (private var initialTimeSec: ULong, private val viewModel: ViewModel) {
+class CountDownTimer (private var initialTimeSec: Long, private val viewModel: ViewModel) {
 
     private var isStarted = false
     private var currentTimeMilliSec: Long = 0L
@@ -21,15 +21,15 @@ class CountDownTimer (private var initialTimeSec: ULong, private val viewModel: 
         fun toTime(timeMin: ULong, timeSec: ULong) = (timeMin * 60UL) + timeSec
     }
 
-    var time: ULong
+    var time: Long
         get() = initialTimeSec
         set(value) {
             reset()
             initialTimeSec = value
         }
 
-    var timeMilliSec: ULong
-        get() = time * 1000UL
+    var timeMilliSec: Long
+        get() = time * 1000L
         private set(value) {}
 
 
@@ -38,7 +38,7 @@ class CountDownTimer (private var initialTimeSec: ULong, private val viewModel: 
         if (!isStarted) {
             reset()
             isStarted = true
-            currentTimeMilliSec = initialTimeSec.toLong() * 1000L
+            currentTimeMilliSec = initialTimeSec * 1000L
             call(listener)
         }
 
@@ -70,7 +70,7 @@ class CountDownTimer (private var initialTimeSec: ULong, private val viewModel: 
     }
 
     private fun call(listener: CountDownTimerListener) {
-        val temp = ceil(currentTimeMilliSec.toDouble() / 1000.0).toULong()
-        listener.invoke(MinSec.from(temp), currentTimeMilliSec.toULong())
+        val temp = ceil(currentTimeMilliSec.toDouble() / 1000.0).toLong()
+        listener.invoke(MinSec.from(temp), currentTimeMilliSec)
     }
 }

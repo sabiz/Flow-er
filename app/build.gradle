@@ -52,6 +52,7 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.4.1'
     kapt "androidx.room:room-compiler:2.4.1"
     implementation 'com.afollestad.material-dialogs:core:3.3.0'
+    implementation 'com.afollestad.material-dialogs:input:3.3.0'
 
     testImplementation 'junit:junit:'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

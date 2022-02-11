@@ -1,6 +1,5 @@
 package jp.sabiz.flow_er.flowitem.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import jp.sabiz.flow_er.flowitem.FlowItem
 
@@ -18,4 +17,7 @@ interface FlowItemDao {
 
     @Delete()
     fun delete(item: FlowItem)
+
+    @Update()
+    fun update(vararg item: FlowItem)
 }

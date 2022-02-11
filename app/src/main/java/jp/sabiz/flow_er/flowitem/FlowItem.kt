@@ -28,4 +28,9 @@ data class FlowItem(
             return FlowItem(generateId(), position, 5)
         }
     }
+
+    fun clone(position: Int = this.position, count: Long = this.count): FlowItem {
+        return FlowItem(this.id, position, count)
+    }
+
 }
